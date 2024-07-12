@@ -52,7 +52,8 @@ namespace HSDRawViewer
 
             IsMdiContainer = true;
 
-            dockPanel.Theme = new VS2015LightTheme();
+            //dockPanel.Theme = new VS2015LightTheme();
+            dockPanel.Theme = new VS2015DarkTheme();
 
 #if DEBUG
             var vp = new GUI.Controls.DockableViewport();
@@ -243,7 +244,7 @@ namespace HSDRawViewer
             RefreshTree();
 
 #if !DEBUG
-            if(RawHSDFile.Roots.Count > 0 && RawHSDFile.Roots[0].Data is HSDRaw.MEX.MEX_Data)
+            if (RawHSDFile.Roots.Count > 0 && RawHSDFile.Roots[0].Data is HSDRaw.MEX.MEX_Data)
             {
                 if (nodeBox.Visible)
                 {
@@ -571,7 +572,8 @@ namespace HSDRawViewer
             {
                 var editor = GetEditors(SelectedDataNode);
                 editor[0].BringToFront();
-            } else
+            }
+            else
             if (!IsChildOpened(SelectedDataNode.Accessor._s) &&
                 edit != null &&
                 edit is DockContent dc)
@@ -655,7 +657,7 @@ namespace HSDRawViewer
                 d.ShowDialog();
             }
         }
-        
+
         /// <summary>
         /// 
         /// </summary>
@@ -758,7 +760,7 @@ namespace HSDRawViewer
             /*[Browsable(true),
              TypeConverter(typeof(HSDTypeConverter))]
             public Type Type { get; set; } = typeof(HSDAccessor);*/
-            
+
         }
 
         /// <summary>
@@ -771,7 +773,7 @@ namespace HSDRawViewer
             var settings = new NewRootSettings();
             using (HSDTypeDialog t = new HSDTypeDialog())
             {
-                if(t.ShowDialog() == DialogResult.OK)
+                if (t.ShowDialog() == DialogResult.OK)
                 {
                     using (PropertyDialog d = new PropertyDialog("New Root", settings))
                     {
@@ -800,12 +802,12 @@ namespace HSDRawViewer
         {
             var f = Tools.FileIO.OpenFile("All Files |*.*");
 
-            if(f != null)
+            if (f != null)
             {
                 var root = new HSDRootNode();
 
                 root.Name = System.IO.Path.GetFileNameWithoutExtension(f);
-                root.Data = new HSDAccessor() ;
+                root.Data = new HSDAccessor();
                 root.Data._s.SetData(System.IO.File.ReadAllBytes(f));
 
                 RawHSDFile.Roots.Add(root);
@@ -822,7 +824,7 @@ namespace HSDRawViewer
         private void treeView1_BeforeLabelEdit(object sender, NodeLabelEditEventArgs e)
         {
             // Can only edit root node labels
-            if(!(e.Node is DataNode d && d.IsRootNode && !d.IsReferenceNode))
+            if (!(e.Node is DataNode d && d.IsRootNode && !d.IsReferenceNode))
             {
                 e.CancelEdit = true;
             }
@@ -840,7 +842,7 @@ namespace HSDRawViewer
                 d.RootText = e.Label;
             }
         }
-        
+
         /// <summary>
         /// 
         /// </summary>
@@ -859,9 +861,9 @@ namespace HSDRawViewer
         private void trimExcessDataToolStripMenuItem_Click(object sender, EventArgs e)
         {
             var trimmed = 0;
-            foreach(DataNode d in treeView1.Nodes)
+            foreach (DataNode d in treeView1.Nodes)
             {
-                if(d.Accessor != null)
+                if (d.Accessor != null)
                     trimmed += d.Accessor.Optimize();
             }
             MessageBox.Show($"Trimmed 0x{trimmed.ToString("X")} bytes", "Trimmed File");
@@ -879,6 +881,11 @@ namespace HSDRawViewer
                     return d.Accessor;
 
             return null;
+        }
+
+        private void musicToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }
